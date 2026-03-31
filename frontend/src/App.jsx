@@ -14,6 +14,7 @@ export default function App() {
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [activeTab, setActiveTab] = useState('home')
 
   const runAnalysis = async () => {
     setLoading(true)
@@ -42,31 +43,69 @@ export default function App() {
 
   return (
     <main className="container">
-      <h1>Dose-Drift Detector</h1>
-      <p className="subtitle">
-        Deteksi pergeseran dosis harian berbasis AI pada CBCT untuk trigger adaptive replanning.
-      </p>
+      <header className="hero">
+        <h1>Dose-Drift Detector</h1>
+        <p className="subtitle">
+          Deteksi pergeseran dosis harian berbasis AI pada CBCT untuk trigger adaptive replanning.
+        </p>
+      </header>
 
-      <button onClick={runAnalysis} disabled={loading}>
-        {loading ? 'Menganalisis...' : 'Jalankan Analisis AI'}
-      </button>
+      <section className={`panel ${activeTab === 'home' ? 'active' : ''}`} id="home">
+        <h2>Ringkasan</h2>
+        <p className="panel-text">
+          Gunakan modul ini untuk memantau perubahan anatomi dan setup error harian sebelum
+          memutuskan adaptive replanning.
+        </p>
+      </section>
 
-      {error && <p className="error">{error}</p>}
+      <section className={`panel ${activeTab === 'analysis' ? 'active' : ''}`} id="analysis">
+        <h2>Analisis</h2>
+        <button onClick={runAnalysis} disabled={loading}>
+          {loading ? 'Menganalisis...' : 'Jalankan Analisis AI'}
+        </button>
+        {error && <p className="error">{error}</p>}
+      </section>
 
-      {result && (
-        <section className="card">
-          <h2>Hasil Prediksi ({result.patient_id})</h2>
-          <ul>
-            <li>Estimasi penurunan D95 target: {result.estimated_d95_drop_pct}%</li>
-            <li>Estimasi risiko overdosis OAR: {result.estimated_oar_overdose_risk_pct}%</li>
-            <li>
-              Trigger replanning:{' '}
-              <strong>{result.trigger_replanning ? 'YA (perlu evaluasi cepat)' : 'TIDAK'}</strong>
-            </li>
-          </ul>
-          <p>{result.summary}</p>
-        </section>
-      )}
+      <section className={`panel ${activeTab === 'results' ? 'active' : ''}`} id="results">
+        <h2>Hasil</h2>
+        {result ? (
+          <section className="card">
+            <h3>Hasil Prediksi ({result.patient_id})</h3>
+            <ul>
+              <li>Estimasi penurunan D95 target: {result.estimated_d95_drop_pct}%</li>
+              <li>Estimasi risiko overdosis OAR: {result.estimated_oar_overdose_risk_pct}%</li>
+              <li>
+                Trigger replanning:{' '}
+                <strong>{result.trigger_replanning ? 'YA (perlu evaluasi cepat)' : 'TIDAK'}</strong>
+              </li>
+            </ul>
+            <p>{result.summary}</p>
+          </section>
+        ) : (
+          <p className="panel-text">Belum ada hasil. Jalankan analisis terlebih dahulu.</p>
+        )}
+      </section>
+
+      <nav className="bottom-nav" aria-label="Navigasi mobile">
+        <button
+          className={activeTab === 'home' ? 'is-active' : ''}
+          onClick={() => setActiveTab('home')}
+        >
+          Home
+        </button>
+        <button
+          className={activeTab === 'analysis' ? 'is-active' : ''}
+          onClick={() => setActiveTab('analysis')}
+        >
+          Analisis
+        </button>
+        <button
+          className={activeTab === 'results' ? 'is-active' : ''}
+          onClick={() => setActiveTab('results')}
+        >
+          Hasil
+        </button>
+      </nav>
     </main>
   )
 }

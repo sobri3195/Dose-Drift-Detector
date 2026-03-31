@@ -17,6 +17,10 @@ body {
   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
 }
 
+.hero {
+  margin-bottom: 20px;
+}
+
 .subtitle {
   color: #334155;
 }
@@ -36,7 +40,6 @@ button:disabled {
 }
 
 .card {
-  margin-top: 20px;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   padding: 16px;
@@ -44,4 +47,62 @@ button:disabled {
 
 .error {
   color: #b91c1c;
+}
+
+.panel {
+  margin-top: 20px;
+}
+
+.panel-text {
+  color: #334155;
+  margin: 8px 0 0;
+}
+
+.bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 0;
+    min-height: 100vh;
+    border-radius: 0;
+    padding: 20px 16px 90px;
+    box-shadow: none;
+  }
+
+  .panel {
+    display: none;
+  }
+
+  .panel.active {
+    display: block;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.08);
+  }
+
+  .bottom-nav button {
+    background: #e2e8f0;
+    color: #0f172a;
+    border-radius: 8px;
+    padding: 10px 8px;
+    font-weight: 600;
+  }
+
+  .bottom-nav button.is-active {
+    background: #0369a1;
+    color: #ffffff;
+  }
 }
